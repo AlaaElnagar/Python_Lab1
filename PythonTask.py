@@ -25,12 +25,12 @@ while(Escape_char != "end"):
         call_String()
     elif Prog_num == 10 :
         call_speed()
-    # elif Prog_num == 11 :
-    #
-    # elif Prog_num == 12:
-    #
-    # elif Prog_num == 13 :
-
+    elif Prog_num == 11 :
+        matrix_numpy()
+    elif Prog_num == 12:
+        Remove_Negative()
+    elif Prog_num == 13 :
+        shift_left()
     elif Prog_num == 14 :
          GetMaxNum()
     elif Prog_num == 15 :

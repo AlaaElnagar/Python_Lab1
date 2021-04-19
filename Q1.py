@@ -164,6 +164,54 @@ def call_speed():
     Rocket = Speed(24,5000)
     Rocket.Get_average_Speed()
 
+"""
+11) Write a NumPy program to create a 3x3 matrix with
+values ranging from 2 to 10.
+Expected Output:
+[[ 2 3
+[ 5 6
+[ 8 9
+
+"""
+def matrix_numpy():
+    import numpy as np
+    x =  np.arange(2, 11).reshape(3,3)
+    print(x)
+
+"""
+12) Write a NumPy program to remove the negative
+values in a NumPy array with 0
+Expected Output:
+Original array:
+-1 -4 0 2 3 4 5 -6]
+Replace the negative values of the said array with 0:
+[0 0 0 2 3 4 5
+"""
+def Remove_Negative():
+    import numpy as np
+    x = np.array([-1, -4, 0, 2, 3, 4, 5, -6])
+    print("main array:")
+    print(x)
+    print("Replace the negative values of the said array with 0:")
+    x[x < 0] = 0
+    print(x)
+"""
+13)
+Write a NumPy program to partition a given array in a specified
+position and move all the smaller elements values to the left of the
+partition, and the remaining values to the right, in arbitrary order.
+Original array:
+[ 70 50 20 30 11 60 50 40]
+After partitioning on 4 the position:
+11 30 20 40 50 50 60 70]
+"""
+def shift_left():
+    import numpy as np
+    nums = np.array([70, 50, 20, 30, -11, 60, 50, 40])
+    print("Original array:")
+    print(nums)
+    print("\nAfter partitioning on 4 the position:")
+    print(np.partition(nums, 4))
 
 """
 14) Write a program that repeatedly prompts a user for integer numbers until
