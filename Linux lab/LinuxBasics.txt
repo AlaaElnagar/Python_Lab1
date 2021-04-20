@@ -1,0 +1,126 @@
+A1- cat 
+	cat > file   #creat file and write inside it , Exit by (ctr+d)
+	cat file     #open file "read it "
+	cat file1 file2 > file3 # copy two files contents into the 3rd 
+   -more 
+	more -p file.txt #navigate the file in cmd
+/
+cat: display the whole file
+more: display screen, screen. Navigation is by enter-key, space-key
+*************************************************************************/
+A2- pwd
+
+/*************************************************************************/
+
+A3-       cd /home 
+	  mkdir SAMPLE   
+/*************************************************************************/
+A4-       mkdir SAMPLE   
+	  cd SAMPLE 
+	  mkdir HELLO
+/*************************************************************************/
+A5-       mkdir /home/Hello
+/*************************************************************************/
+A6-     cd /home   
+	rmdir Hello
+/*************************************************************************/
+A7-     cd /home/SAMPLE  
+	 mkdir SAMPLE/HELLO 
+##
+sudo mkdir -p  SAMPLE/HELLO
+##
+/*************************************************************************/
+A8-       touch .hidden_file.txt
+/*************************************************************************/
+A9-	  rm ---> mean remove file   # Not only files !!
+	  rmdir-> mean remove directory
+###
+rm: removes file and with option –r removes directories.
+rmdir: removes empty directories.
+##
+/*************************************************************************/
+A10-      mkdir alaa docs
+	  cd docs
+	  touch WS-ITI
+	  cd ..
+	  cd alaa
+	  mkdir dir1 dir2
+	  cd dir1 
+	  touch file1  
+	  
+#####
+
+mkdir alaa  docs 
+cd alaa; mkdir dir1 dir2  // mkdir alaa/dir1 dir1/dir2
+cd dir1; touch file1	//touch dir1/file  //touch alaa/dir1/file
+cd; cd docs; touch WS-ITI	//touch ../../docs/SW-ITI //touch docs/SW-ITI
+
+#####	  
+/*************************************************************************/
+A11-	  rmdir dir1
+###
+rmdir dir1
+dir1 is not an empty directory
+rm -r dir1
+###
+/*************************************************************************/	  
+A12-      rmdir -p dir2     >
+rmdir –p dir/dir2
+dir is also removes as it’s empty after removing dir2
+/*************************************************************************/        
+A13-      cd /home/Downloads    abslute
+	  -----
+	  cd ..
+	  cd Downloads
+####
+Absolute : /home/(USERNAME)/docs/SW-ITI
+Relative : ../(USERNAME)/docs/SW-ITI
+####	  
+/*************************************************************************/
+A14- 	  cp passwd  /home/my_password    
+	  mv my_password old_password 
+	  ##Great 
+/*************************************************************************/
+   
+A15-      
+	  cd    
+	  cd~
+          cd ..
+###
+PLEASE READ THE QUESTIONS WELL
+cd /home/guest
+cd ../../home/guest
+cd ~
+cd
+###
+/*************************************************************************/
+A16-     ls w*  ##ls /usr/bin/w*
+/*************************************************************************/
+A17-      head -4 /etc/passwd   
+##
+head -n4 /etc/passwd    //head -4 /etc/passwd
+##
+/*************************************************************************/
+A18-      head -n -4 /etc/passwd  #I Need last 7 lines  
+##
+tail -7 /etc/passwd
+## 
+/*************************************************************************/
+A19-	  cd 
+	  cat >my_code.txt	
+	  my name is AlaaElnagarITI
+	  ctr+d	
+	  grep -rHino "AlaaElnagarITI" /home
+#####	  
+touch my_code.text
+nano  my_code.text
+
+mohamed_ITI
+
+grep -r "AlaaElnagarITI"
+
+cd Desktop
+
+grep -R "AlaaElnagarITI"	  
+####
+/*************************************************************************/	  
