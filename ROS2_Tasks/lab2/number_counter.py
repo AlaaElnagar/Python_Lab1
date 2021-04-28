@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import rclpy
 from rclpy.node import Node
 from example_interfaces.msg import String
@@ -29,7 +28,7 @@ class my_node(Node):
         response.success = True
         if self.activated_:
             self.val = 0
-            self.obj_pub.publish(str(self.val))
+            #self.obj_pub.publish(str(self.val))
 
         return response
 
