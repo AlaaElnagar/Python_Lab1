@@ -1,0 +1,20 @@
+Task 1:
+arguments=['1.92', '0.36', '0', '0', '0', '0', 'base_link', 'lidar_link'],
+Comment : 0.36 should be in z direction
+
+arguments=['1.8', '-.03', '0', '0', '0', '0', 'base_link', 'zed_link'],
+Comment : Zed_link has value in z direction
+
+arguments=['1.8', '-0.50', '1', '1.57', '0', '0', 'base_link', 'imu_link'],
+Comment:
+imu_link is  90 degree clockwise of base_footprint.
+clockwise means negative degree
+counter clockwise means positive degree
+
+Comment: Please always make sure to read the question properly and stick to the names: (base_footprint , carkyo_static_tf_launch.py and so..)
+
+
+Task 2:
+Great work. But the lidar goes only on one direction (down) .. It should go on both directions.
+Again: I expected the frame names to be "lidar_link" and "servo_link" as shown in lab slides, Also the python file name: brodcast_lidar_transform.py
+
