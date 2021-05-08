@@ -22,46 +22,79 @@ class my_node(Node):
     sub_x = 0.
     sub_y = 0.
     sub_theta = 0.
-
-
+    parallel = 0.
+    adj = 0.
+    regen_spawn_x = 0.
+    regen_spawn_y = 0.
+    start_flag = 1
+    theta_flag = 0
+    s_flag = 0
     def __init__(self):
         super().__init__("controll_node")
          
-        #self.create_timer(1/4,self.timer_call)
         self.sub_sub=self.create_subscription(Pose,"/turtle1/pose",self.func_call,10)
         self.turtle_pub=self.create_publisher(Twist,"/turtle1/cmd_vel",10)
         self.get_logger().info("controll_node is started")
         self.serv_client(True,False)
-    def func_call(self ,msg):       
+        self.get_logger().info("regx {} -  regy {}".format ( self.regen_spawn_x,self.regen_spawn_y ))
+    def func_call(self ,msg): 
+
+        if (self.start_flag ==1):
+            self.serv_client(True,False)
+            self.start_flag = 0
+        #get my turtal pose     
         self.main_x =msg.x
         self.main_y = msg.y
-        self.main_theta = msg.theta
-        self.err_theta = abs(self._theta - self.main_theta )
+        self.main_theta=msg.theta
 
-        if (not (self._err>0 and self._err<1 and self.err_theta <.1 )):
-            self.serv_client(False,False)
-        else :
-             self.serv_client(True,False)
+        #self.get_logger().info("mainx {} -  main {}".format ( self.main_x,self.main_y))
+        #self.get_logger().info("regx {} -  regy {}".format ( self.regen_spawn_x,self.regen_spawn_y ))
+
+        #-------------------------------------------Make some cool calculations 
+        self._err = (math.sqrt( ((self.main_x -  self.regen_spawn_x)**2)+ ((self.main_y -self.regen_spawn_y)**2) ) ) 
+        self.parallel = abs(self.main_y - self.regen_spawn_y)
+        self.adj = abs(self.main_x - self.regen_spawn_x)
+        if (self.adj):     #preevent div by zerro
+             self._theta=math.atan2(self.parallel,self.adj)    
+
+        self.err_theta = (abs(self._theta - self.main_theta )) 
+        T_msg = Twist()
+       # self.get_logger().info(" Out optimizw linear err {} - angerr {}".format ( self._err,self.err_theta))     
+
+#ang movement 
+        if self.err_theta >.2 :
+            #T_msg._linear.x = 0.                   #self._err
+            T_msg._linear.x = 0.
+
+            T_msg.angular.z = self.err_theta 
+            #self.turtle_pub.publish(T_msg)
+
+            #self.get_logger().info(" theta optimizw linear err {} - angerr {}".format ( self._err,self.err_theta))     
             
-       # else :
+ #linear movement 
 
-        
+        elif (self.err_theta< .2):
+            #self.s_flag = 1
+            T_msg._linear.x = self._err
+ 
+            T_msg.angular.z = 0.
+            #self.turtle_pub.publish(T_msg)
+        self.turtle_pub.publish(T_msg)
 
-    #def timer_call(self):
-      #  self.get_logger().info("Hello")  # Call Back
+     
 
 
-        
-        #self.Turtle_client()
-        #self.get_logger().info("check")
-        #if self.flag ==0:
-        #    self.serv_client(True,False)
-        #    self.flag=1 
-        #elif self.flag==1:
-        #  self.serv_client(False,True)
-        #  self.flag =0
+#killing 
+        if (self._err <.2):
+            self.serv_client(False,True)                            #kill
+            self.start_flag =1  
+            self.s_flag = 0 
+            #self.get_logger().info("kill  {} -  Err t {}".format ( self._err,self.err_theta))
+        self.get_logger().info("_err  {} -  theta{}".format ( self._err,self.err_theta))
 
-        #self.serv_client(True,False)
+
+
+
 
     def serv_client(self , a,b):
         client=self.create_client(Boolsrv,"my_server")
@@ -76,37 +109,8 @@ class my_node(Node):
 
     def future_call(self,res_msg):
         #self.get_logger().info(str(res_msg.result().state))
-        self._err = math.sqrt( pow((self.main_x -res_msg.result().linrx) ,2)+ pow((self.main_y - res_msg.result().linry),2) )
-        parallel = abs(self.main_y - res_msg.result().linry)
-        adj = abs(self.main_y - res_msg.result().linry)
-        if (adj):
-            self._theta=math.atan2(parallel,adj)
-        self.err_theta = abs(self._theta - self.main_theta )
-
-        T_msg = Twist()
-        T_msg._linear.x = 0.                   #self._err
-        T_msg._linear.y = 0.
-        T_msg._linear.z = 0.
-
-
-        T_msg.angular.x = 0.
-        T_msg.angular.y = 0.
-        T_msg.angular.z = self.err_theta
-
-        self.turtle_pub.publish(T_msg)
-        if ( self.err_theta <.1):
-            T_msg._linear.x = self._err
-            T_msg._linear.y = 0.
-            T_msg._linear.z = 0.
-
-
-            T_msg.angular.x = 0.
-            T_msg.angular.y = 0.
-            T_msg.angular.z = 0.
-            self.turtle_pub.publish(T_msg)
-        if (self._err>0 and self._err<1 and self.err_theta <.1 ):
-            self.serv_client(False,True)
-        self.get_logger().info("linx {} -  liny {}".format ( T_msg.angular.y ,T_msg.angular.x ))
+        self.regen_spawn_x= res_msg.result().linrx
+        self.regen_spawn_y=res_msg.result().linry
 
 
 
