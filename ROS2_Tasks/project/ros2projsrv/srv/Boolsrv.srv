@@ -1,0 +1,10 @@
+bool newturtle
+bool arrivedornot
+
+---
+float64  linrx
+float64  linry
+float64  linrz
+float64  angx
+float64  angy
+float64  angz
