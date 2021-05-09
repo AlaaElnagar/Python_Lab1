@@ -26,7 +26,7 @@ class my_node(Node):
     adj = 0.
     regen_spawn_x = 0.
     regen_spawn_y = 0.
-    start_flag = 1
+    start_flag = 0
     theta_flag = 0
     s_flag = 0
     def __init__(self):
@@ -35,13 +35,15 @@ class my_node(Node):
         self.sub_sub=self.create_subscription(Pose,"/turtle1/pose",self.func_call,10)
         self.turtle_pub=self.create_publisher(Twist,"/turtle1/cmd_vel",10)
         self.get_logger().info("controll_node is started")
+        #------start with new turtile 
         self.serv_client(True,False)
-        self.get_logger().info("regx {} -  regy {}".format ( self.regen_spawn_x,self.regen_spawn_y ))
+
     def func_call(self ,msg): 
 
         if (self.start_flag ==1):
             self.serv_client(True,False)
             self.start_flag = 0
+
         #get my turtal pose     
         self.main_x =msg.x
         self.main_y = msg.y
@@ -51,46 +53,49 @@ class my_node(Node):
         #self.get_logger().info("regx {} -  regy {}".format ( self.regen_spawn_x,self.regen_spawn_y ))
 
         #-------------------------------------------Make some cool calculations 
+        #self.regen_spawn_x ---> pose of regenerated turtle from service 
         self._err = (math.sqrt( ((self.main_x -  self.regen_spawn_x)**2)+ ((self.main_y -self.regen_spawn_y)**2) ) ) 
-        self.parallel = abs(self.main_y - self.regen_spawn_y)
-        self.adj = abs(self.main_x - self.regen_spawn_x)
-        if (self.adj):     #preevent div by zerro
-             self._theta=math.atan2(self.parallel,self.adj)    
+           
+        self._theta=math.atan2((self.regen_spawn_y - self.main_y ) , (self.regen_spawn_x -self.main_x  )  )
 
-        self.err_theta = (abs(self._theta - self.main_theta )) 
+        self.err_theta = (self._theta - self.main_theta ) *.7
         T_msg = Twist()
        # self.get_logger().info(" Out optimizw linear err {} - angerr {}".format ( self._err,self.err_theta))     
 
 #ang movement 
-        if self.err_theta >.2 :
+        if abs(self.err_theta) >.2 :   #.01
             #T_msg._linear.x = 0.                   #self._err
             T_msg._linear.x = 0.
 
-            T_msg.angular.z = self.err_theta 
-            #self.turtle_pub.publish(T_msg)
+            T_msg.angular.z = abs(self.err_theta)
+            self.turtle_pub.publish(T_msg)
 
-            #self.get_logger().info(" theta optimizw linear err {} - angerr {}".format ( self._err,self.err_theta))     
+        self.get_logger().info(" theta optimizw linear err {} - angerr {}".format ( self._err,abs(self.err_theta)))     
             
  #linear movement 
 
-        elif (self.err_theta< .2):
+        if abs(self.err_theta) < .2 :
             #self.s_flag = 1
             T_msg._linear.x = self._err
  
             T_msg.angular.z = 0.
-            #self.turtle_pub.publish(T_msg)
-        self.turtle_pub.publish(T_msg)
+            self.turtle_pub.publish(T_msg)
+
+        
 
      
 
 
 #killing 
-        if (self._err <.2):
-            self.serv_client(False,True)                            #kill
+        if (self._err <.5):
+                                       #kill
             self.start_flag =1  
             self.s_flag = 0 
+            self.serv_client(False,True)
+
+
             #self.get_logger().info("kill  {} -  Err t {}".format ( self._err,self.err_theta))
-        self.get_logger().info("_err  {} -  theta{}".format ( self._err,self.err_theta))
+       # self.get_logger().info("_err  {} -  theta{}".format ( self._err,self.err_theta))
 
 
 

@@ -32,7 +32,7 @@ class my_node(Node):
 
     
     def srv_call(self, request, response):
-        if request.arrivedornot:
+        if request.arrivedornot  :
 
             client=self.create_client(Kill,"/kill")
             while client.wait_for_service(1)==False:
@@ -40,13 +40,12 @@ class my_node(Node):
             req_kill = Kill.Request()
             req_kill.name="AlaaTurtles"
             futur_obj2=client.call_async(req_kill)
-            self.flag =1
-           
+            self.flag =1       
         
-        elif request.newturtle  :       
+        elif request.newturtle   :       
             x_turt=float (random.uniform(1, 10))   
             y_turt=float (random.uniform(1, 10))
-            theta_turt=float(random.uniform(0,3.14))
+            theta_turt=float(random.uniform(0,1.57))
             client=self.create_client(Spawn,"/spawn")
             while client.wait_for_service(1)==False:
                 self.get_logger().warn("wating for turtlesim")
@@ -56,14 +55,15 @@ class my_node(Node):
             self.theta_turt_c=req_spawn.theta = theta_turt
             req_spawn.name ="AlaaTurtles"
             futur_obj=client.call_async(req_spawn)
-        
-        response.linrx=x_turt
-        response.linry=y_turt
-        response.linrz=0.
+            self.flag =0
+             
+            response.linrx=self.x_turt_c
+            response.linry= self.y_turt_c
+            response.linrz=0.
 
-        response.angx = 0.
-        response.angy = 0.
-        response.angz = 0.
+            response.angx = 0.
+            response.angy = 0.
+            response.angz = 0.
 
 
         #self.get_logger().info("regx {} -  regy {}".format ( self. response.linrx,self.response.linry))
