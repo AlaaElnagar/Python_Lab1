@@ -42,7 +42,7 @@ class my_node(Node):
         #convert into euler rad/sec
         roll,pitch,yaw=self.euler_from_quaternion(self, Imu_msg.orientation) 
         #convert into degree
-        yaw*=pi/180
+        yaw*=180/pi
         if (yaw >-2 and yaw <2 ):
             self.get_logger().warn("The robot is nearly heading north .. Heading is: {} degrees".format(yaw) )
         if abs(Imu_msg.linear_acceleration.x) >.3 :
