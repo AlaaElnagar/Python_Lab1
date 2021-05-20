@@ -53,6 +53,9 @@ class my_node(Node):
                 #set check_limit
 
                 if self.count == self.ext_count :
+                #set header 
+                   Imu_msg.header.frame_id= "imu_link"
+		    Imu_msg.header.stamp= Node.get_clock().now().to_msg()
                 #read acc
                     Imu_msg.linear_acceleration.x=float (row[0] ) *9.80
                     Imu_msg.linear_acceleration.y=float (row[1] ) *9.80

@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
         'node1=localization_lab1.node1:main',
+        'task1=localization_lab1.task1:main',
         ],
     },
 )
