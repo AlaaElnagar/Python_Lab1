@@ -1,0 +1,8 @@
+ifconfig        #list all network conected to my wifi
+
+#copy ip that my laptop conected to
+		
+
+nmap -sn {ip}          # get my rasspbery ip
+
+
