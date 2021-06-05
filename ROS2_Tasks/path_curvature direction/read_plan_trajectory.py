@@ -62,7 +62,7 @@ class my_node(Node):
           
             r,p,yaw_3 =self.euler_from_quaternion(msg.poses[10].pose.orientation)
 
-            direction=(yaw_1+yaw_2+yaw_3)
+            direction=(yaw_1-yaw_3)
             
             curvature=self.menger_curvature(p1_x, p1_y, p2_x, p2_y, p3_x, p3_y)
 
@@ -72,10 +72,11 @@ class my_node(Node):
             #self.get_logger().info("There is a curve  :{}".format(curvature)) 
             self.string_pub.publish(state)
             if direction > 0 :
-               self.get_logger().info(" The robot is turning LEFT with a curvature:{} where {}  is the curavature of the path.".format(curvature , curvature))
-            else:
+               
                 self.get_logger().info(" The robot is turning RIGHT with a curvature:{} where {}  is the curavature of the path.".format(curvature , curvature))
-
+            else:
+                self.get_logger().info(" The robot is turning LEFT with a curvature:{} where {}  is the curavature of the path.".format(curvature , curvature))
+                 
 
         else :
             state.data=("The path is straight  :{}".format(curvature))
@@ -84,7 +85,8 @@ class my_node(Node):
             #self.get_logger().info("The path is directiont  :{}".format(direction))
             #self.get_logger().info("The path is straight  :{}".format(curvature))
        
-       
+        self.get_logger().info("The path is   :{}".format(direction))
+
         
     def menger_curvature(self, point_1_x, point_1_y, point_2_x, point_2_y, point_3_x, point_3_y):
         triangle_area = 0.5 * abs( (point_1_x*point_2_y) + (point_2_x*point_3_y) + (point_3_x*point_1_y) - (point_2_x*point_1_y) - (point_3_x*point_2_y) - (point_1_x*point_3_y))#Shoelace formula 
